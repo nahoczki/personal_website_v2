@@ -30,26 +30,29 @@ const useStyles = makeStyles((theme) => ({
 
 const Project = (props) => {
     let classes = useStyles();
-    //let project = props.project;
+    let project = props.project;
+    let tags = []
+
+    project.tags.forEach(tag => {
+        tags.push(tag)
+    })
 
     //console.log(project)
 
 
     return (
         <Card className={classes.card}>
-            <CardActionArea href={``}>
+            <CardActionArea href={project.url} target={"_blank"}>
                 <CardContent className={classes.cardContent}>
                     <h2 className={classes.secondaryText}>
-                        "Chatty App"
+                        {project.title}
                     </h2>
                     <h4>
-                        "Chatty App" is a mobile app that utilizes websockets to send messages to another mobile device via
-                        a Node.JS backend
+                        {project.description}
                     </h4>
                     <h5 className={classes.secondaryText}>
-                        Node.JS, Swift, MongoDB
+                        { tags.join(", ") }
                     </h5>
-
                 </CardContent>
             </CardActionArea>
         </Card>

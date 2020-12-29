@@ -5,6 +5,8 @@ import Button from "@material-ui/core/Button";
 import gsap from "gsap"
 import {Container, Grid, CircularProgress} from "@material-ui/core";
 
+import {db} from '../firebase'
+
 import Project from "../components/Project";
 
 
@@ -45,18 +47,39 @@ const useStyles = makeStyles((theme) => ({
 const Portfolio = (props) => {
 
     const classes = useStyles()
-    const [isLoading, setLoading] = React.useState(false);
+    const [isLoading, setLoading] = React.useState(true);
     const [projects, setProjects] = React.useState([]);
     const projectDomNodes = [];
 
 
     let [title, hr] = ""
 
+
     useEffect(() => {
-        gsap.timeline()
-            .to(title, { y: "-20", autoAlpha: 1})
-            .from(hr, {scaleX: 0, autoAlpha: 0})
-    }, [])
+
+        if (isLoading) {
+            db.collection("projects")
+                .get()
+                .then((snap) => {
+                    let projs = [];
+
+                    snap.forEach(proj => {
+                        let project = proj.data()
+                        project["id"] = proj.id
+
+                        projs.push(project);
+                    })
+
+                    setProjects(projs);
+                    setLoading(false);
+                })
+        } else {
+            gsap.timeline()
+                .to(title, { y: "-20", autoAlpha: 1})
+                .from(hr, {scaleX: 0, autoAlpha: 0})
+        }
+
+    }, [isLoading])
 
     return (
         <div>
@@ -82,49 +105,25 @@ const Portfolio = (props) => {
             <div>
                 <Container className={classes.cardGrid} maxWidth="md">
                     {!isLoading ? <Grid container spacing={4} alignItems={"center"}>
-                        <Grid
-                            item
-                            xs={12}
-                            sm={6}
-                            md={4}
-                        >
-                            <Project/>
-                        </Grid>
-                        <Grid
-                            item
-                            xs={12}
-                            sm={6}
-                            md={4}
-                        >
-                            <Project/>
-                        </Grid>
-                        <Grid
-                            item
-                            xs={12}
-                            sm={6}
-                            md={4}
-                        >
-                            <Project/>
-                        </Grid>
 
-                        {/*{projects.map((project, index) => {*/}
-                        {/*    return(*/}
-                        {/*        <Grid*/}
-                        {/*            item*/}
-                        {/*            key={project.id}*/}
-                        {/*            xs={12}*/}
-                        {/*            sm={6}*/}
-                        {/*            md={4}*/}
-                        {/*        >*/}
-                        {/*            <div*/}
-                        {/*                ref={e => (projectDomNodes[index] = e)}*/}
-                        {/*                style={{opacity:0}}*/}
-                        {/*            >*/}
-
-                        {/*            </div>*/}
-                        {/*        </Grid>*/}
-                        {/*    )*/}
-                        {/*})}*/}
+                        {projects.map((project, index) => {
+                            return(
+                                <Grid
+                                    item
+                                    key={project.id}
+                                    xs={12}
+                                    sm={6}
+                                    md={4}
+                                >
+                                    <div
+                                        ref={e => (projectDomNodes[index] = e)}
+                                        style={{opacity:1}}
+                                    >
+                                        <Project project={project}/>
+                                    </div>
+                                </Grid>
+                            )
+                        })}
                     </Grid> : <CircularProgress className={classes.spinner} />}
                 </Container>
             </div>
