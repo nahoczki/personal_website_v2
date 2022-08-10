@@ -130,7 +130,7 @@ const Portfolio = (props) => {
 
 
             <GithubCorner
-                href="https://github.com/m4nz"
+                href="https://github.com/nahoczki"
                 bannerColor={"#6564DB"}
                 size={100}
             />
