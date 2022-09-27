@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button"
 import Grid from "@material-ui/core/Grid"
 import gsap from 'gsap'
+import Typography from "@material-ui/core/Typography";
+import {Card, CardActionArea} from "@material-ui/core";
 
 
 
@@ -55,6 +57,37 @@ const useStyles = makeStyles((theme) => ({
         textTransform: 'none',
         color: theme.palette.secondary.main,
         width: 250
+    },
+    liveProjects: {
+        color: theme.palette.primary.main,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    line: {
+        color: theme.palette.secondary.main,
+    },
+    projectCard: {
+        marginTop: 20,
+        width: 250,
+        height: 150,
+        backgroundColor: 'transparent',
+        border: '1px solid',
+        borderColor: theme.palette.secondary.main,
+        color: theme.palette.secondary.main,
+        borderRadius: 10
+    },
+    liveIcon: {
+        position: 'relative',
+        marginLeft: "auto",
+        right: 20,
+        top: 20,
+        marginBottom: -20,
+        width: 20,
+        height: 20,
+        backgroundColor: 'green',
+        borderRadius: '50%'
     }
 
 
@@ -105,7 +138,7 @@ const Home = (props) => {
                     </Grid>
                     <Grid item>
                         <Button
-                            href={"https://github.com/m4nz"}
+                            href={"https://github.com/nahoczki"}
                             target={"_blank"}
                             className={classes.socialButton}
                             variant="outlined"
@@ -114,7 +147,28 @@ const Home = (props) => {
                         >Github</Button>
                     </Grid>
                 </Grid>
+                <div className={classes.liveProjects}>
+                    <h1>Live projects</h1>
+                    <hr className={classes.line} style={{
+                        width: '25%'
+                    }}/>
+                    <Card className={classes.projectCard}>
+                        <div className={classes.liveIcon}/>
+                        <CardActionArea href={"https://carefindr.us"}
+                                        target={"_blank"} style={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <img src={'./assets/carefindr.png'} width={40}/>
+                            <Typography>Carefindr.us</Typography>
+                        </CardActionArea>
+                    </Card>
+                </div>
             </div>
+
 
             {/* Intro Animation Elements */}
             <div
